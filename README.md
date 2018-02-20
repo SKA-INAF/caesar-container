@@ -37,5 +37,12 @@ where:
 * ```RECIPE_FILE```: Name of the recipe file provided in this repository (e.g. Singularity.xenial)
 
 ## **How to use CAESAR images?**
-WRITE ME
+To see the list of apps installed in your CAESAR container (say named ```caesar.simg```):
+
+* ``` [...]$ singularity apps caesar.simg```
+
+To run one app (say the ```sfinder``` app):
+
+* ```[...]$ singularity run --app sfinder caesar.simg --config=myconfig.cfg```
+```
 
