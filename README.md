@@ -33,8 +33,8 @@ To build images do the following:
 
 where:
 
-* ```IMAGE\_NAME```: Name of image file you want to be created (e.g. caesar-base.simg for base container or caesar.simg for caesar container).   
-* ```RECIPE\_FILE```: Name of the recipe file provided in this repository (e.g. Singularity.xenial)
+* ```IMAGE_NAME```: Name of image file you want to be created (e.g. caesar-base.simg for base container or caesar.simg for caesar container).   
+* ```RECIPE_FILE```: Name of the recipe file provided in this repository (e.g. Singularity.xenial)
 
 ## **How to use CAESAR images?**
 WRITE ME
