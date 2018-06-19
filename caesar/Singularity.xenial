@@ -10,6 +10,7 @@ From: caesar_base.simg
 	It uses the dependencies provided in the caesar_base container.
 	A series of CAESAR apps are provided:
 		
+		- readimg: Read a FITS/ROOT image, compute stats and save it in CAESAR format in a ROOT file  
 		- fits2root: Convert a FITS image to Caesar image and save it in ROOT file  
 		- root2fits: Convert a Caesar image stored in ROOT file to FITS image
 		- bkgfinder: Find bkg & rms maps from image in ROOT/FITS format
@@ -90,8 +91,8 @@ From: caesar_base.simg
 	#################################
 	# Set env variables and create installation dirs
 	export CAESAR_VERSION="trunk"
-	export CAESAR_URL="https://github.com/simoneriggi/ska.git"
-	export CAESAR_SRC_DIR="$SOFTDIR_SRCS/ska/caesar"	
+	export CAESAR_URL="https://github.com/SKA-INAF/caesar.git"
+	export CAESAR_SRC_DIR="$SOFTDIR_SRCS/caesar"	
 	export CAESAR_BUILD_DIR="$SOFTDIR_SRCS/caesar-build"
 	export CAESAR_INSTALL_DIR="$SOFTDIR/CAESAR/$CAESAR_VERSION"
 	export CAESAR_SCRIPTS_DIR="$CAESAR_INSTALL_DIR/scripts"
@@ -163,8 +164,11 @@ From: caesar_base.simg
 
 
 %runscript
-	exec echo "Run application with --app {fits2root | root2fits | sfinder | sfinderrun | sfindersub | saliencyfinder | bkgfinder | catalogcorr | skymodel | simulation | imaging | simulationsub | imagingsub | makefilelist | jobkiller }"
+	exec echo "Run application with --app {readimg | fits2root | root2fits | sfinder | sfinderrun | sfindersub | saliencyfinder | bkgfinder | catalogcorr | skymodel | simulation | imaging | simulationsub | imagingsub | makefilelist | jobkiller }"
 	
+%apprun readimg
+	exec ReadImg "$@"
+
 %apprun fits2root
 	exec FITS2ROOT "$@"
 
