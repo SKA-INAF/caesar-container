@@ -360,7 +360,7 @@ From: ubuntu:16.04
 	# Configure ROOT build
 	echo "Configuring cmake build for ROOT..."
 	cd "$ROOT_BUILD_DIR"
-	cmake -DCMAKE_INSTALL_PREFIX="$ROOT_INSTALL_DIR" -Dfitsio=ON -Dgsl_shared=ON -Dmathmore=ON -Dpython=ON -Droofit=ON -Dshared=ON -Dsoversion=ON -Dtmva=ON -Dunuran=ON -Dx11=ON -Dxft=ON "$ROOT_SRC_DIR"
+	cmake -DCMAKE_INSTALL_PREFIX="$ROOT_INSTALL_DIR" -Dfitsio=ON -Dgsl_shared=ON -Dmathmore=ON -Dminuit2=ON -Dpython=ON -Droofit=ON -Dshared=ON -Dsoversion=ON -Dtmva=ON -Dunuran=ON -Dx11=ON -Dxft=ON "$ROOT_SRC_DIR"
 
 	# Building ROOT
 	echo "Building ROOT..."
