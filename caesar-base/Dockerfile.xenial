@@ -137,8 +137,10 @@ RUN rm -rf ${OPENMPI_SRC_DIR} \
 #################################
 ###    ROOT
 #################################
-ENV ROOT_VERSION="6.14.00"
-ENV ROOT_URL="https://github.com/root-project/root.git"
+##ENV ROOT_VERSION="6.14.00"
+ENV ROOT_VERSION="6.14.06"
+##ENV ROOT_URL="https://github.com/root-project/root.git"
+ENV ROOT_URL="https://root.cern.ch/download/root_v${ROOT_VERSION}"'.source.tar.gz'
 ENV ROOT_SRC_DIR="${SOFTDIR_SRCS}/root-${ROOT_VERSION}"
 ENV ROOT_BUILD_DIR="${SOFTDIR_SRCS}/root-${ROOT_VERSION}"'-build'
 ENV ROOT_INSTALL_DIR="${SOFTDIR}/ROOT/v${ROOT_VERSION}"
@@ -149,9 +151,14 @@ RUN mkdir -p ${ROOT_BUILD_DIR} \
 	&& mkdir -p ${ROOT_INSTALL_DIR}
 	
 ## Download & install
+WORKDIR ${SOFTDIR_TAR}
+RUN wget -nc -O root${ROOT_VERSION}.tar.gz ${ROOT_URL}
+
 WORKDIR ${SOFTDIR_SRCS} 
-RUN git clone ${ROOT_URL} \
-	&& mv root root-${ROOT_VERSION}
+##RUN git clone ${ROOT_URL} \
+##	&& mv root root-${ROOT_VERSION}
+RUN tar -xzvf ${SOFTDIR_TAR}/root${ROOT_VERSION}.tar.gz
+
 
 WORKDIR ${ROOT_BUILD_DIR}
 RUN cmake -DCMAKE_INSTALL_PREFIX=${ROOT_INSTALL_DIR} -Dfitsio=ON -Dgsl_shared=ON -Dmathmore=ON -Dminuit2=ON -Dpython=ON -Droofit=ON -Dshared=ON -Dsoversion=ON -Dtmva=ON -Dunuran=ON -Dx11=ON -Dxft=ON ${ROOT_SRC_DIR} \
