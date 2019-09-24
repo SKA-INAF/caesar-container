@@ -175,7 +175,7 @@ From: sriggi/caesar-base
 	ls -la "$ROOTSYS/etc/cmake"
 
 	echo "Configuring cmake build for caesar"
-	cmake -DCMAKE_INSTALL_PREFIX="$CAESAR_INSTALL_DIR" -DENABLE_R=OFF -DBUILD_APPS=ON -DBUILD_WITH_OPENMP=ON -DENABLE_MPI=ON -DENABLE_TEST=OFF -DBUILD_DOC=OFF -DENABLE_VTK=OFF -DENABLE_SERVER=OFF "$CAESAR_SRC_DIR"
+	cmake -DCMAKE_INSTALL_PREFIX="$CAESAR_INSTALL_DIR" -DENABLE_R=OFF -DBUILD_APPS=ON -DENABLE_OPENMP=ON -DENABLE_MPI=ON -DENABLE_TEST=OFF -DBUILD_DOC=OFF -DENABLE_VTK=OFF "$CAESAR_SRC_DIR"
 
 	echo "Building caesar..."
 	make
@@ -219,7 +219,8 @@ From: sriggi/caesar-base
 
 
 %runscript
-	exec echo "Run application with --app {readimg | fits2root | root2fits | sfinder | sfinderrun | sfindersub | saliencyfinder | bkgfinder | catalogcorr | skymodel | simulation | imaging | simulationsub | imagingsub | makefilelist | jobkiller }"
+	exec echo "Run application with --app {readimg | fits2root | root2fits | sfinder | sfinderrun | sfindersub | saliencyfinder | bkgfinder | catalogcorr | skymodel | simulation | imaging | simulationsub | imagingsub | makefilelist | jobkiller | sselector | sregionsel | sregionmatchfinder | sregiontagger | scatmatchfinder | sastrocatmatchfinder }"
+
 	
 %apprun readimg
 	exec ReadImg "$@"

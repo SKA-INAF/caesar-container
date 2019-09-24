@@ -171,7 +171,8 @@ From: caesar_base.simg
 
 
 %runscript
-	exec echo "Run application with --app {readimg | fits2root | root2fits | sfinder | sfinderrun | sfindersub | saliencyfinder | bkgfinder | catalogcorr | skymodel | simulation | imaging | simulationsub | imagingsub | makefilelist | jobkiller }"
+	exec echo "Run application with --app {readimg | fits2root | root2fits | sfinder | sfinderrun | sfindersub | saliencyfinder | bkgfinder | catalogcorr | skymodel | simulation | imaging | simulationsub | imagingsub | makefilelist | jobkiller | sselector | sregionsel | sregionmatchfinder | sregiontagger | scatmatchfinder | sastrocatmatchfinder }"
+
 	
 %apprun readimg
 	exec ReadImg "$@"
