@@ -158,10 +158,12 @@ From: sriggi/caesar-base
 	cd "$SOFTDIR_SRCS"
 	if [ ! -d "$CAESAR_SRC_DIR" ] ; then
 		echo "Downloading caesar from github repository $CAESAR_URL..."
-		git clone "$CAESAR_URL"
+		#git clone "$CAESAR_URL"
+		git clone -b devel "$CAESAR_URL"
 	else
 		cd $CAESAR_SRC_DIR
-		git pull
+		#git pull
+		git pull origin devel
 	fi
 	
 	echo "Entering caesar cmake build dir $CAESAR_BUILD_DIR"
