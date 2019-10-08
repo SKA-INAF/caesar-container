@@ -246,6 +246,9 @@ From: caesar_base.simg
 %apprun sastrocatmatchfinder
 	exec SourceAstroCatalogsMatchFinder "$@"
 
+%apprun smvclassifier
+	exec SourceMVClassifier "$@"
+
 %apprun printenv
 	exec echo "PATH=$PATH CAESAR_DIR=$CAESAR_DIR"
 

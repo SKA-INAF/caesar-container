@@ -33,6 +33,7 @@ From: sriggi/caesar-base
 		- sregiontagger: Tag sources (real/fake/unknown,...) matching with DS9 regions with region provided tags
 		- scatmatchfinder: Find cross-matches with list of Caesar source catalogs
 		- sastrocatmatchfinder: Find cross-matches with list of Astronomical ascii catalogs
+		- smvclassifier: Classify source components using MV classifier app
 		
 	To launch an app do the following:
 	
@@ -293,6 +294,9 @@ From: sriggi/caesar-base
 
 %apprun sastrocatmatchfinder
 	exec SourceAstroCatalogsMatchFinder "$@"
+
+%apprun smvclassifier
+	exec SourceMVClassifier "$@"
 
 %apprun printenv
 	exec echo "PATH=$PATH CAESAR_DIR=$CAESAR_DIR"
