@@ -1,5 +1,6 @@
-Bootstrap: localimage
-From: caesar_base.simg
+
+BootStrap: docker
+From: sriggi/caesar-base
 
 %help
 	====================================================================================================
@@ -13,6 +14,7 @@ From: caesar_base.simg
 		- fits2root: Convert a FITS image to Caesar image and save it in ROOT file  
 		- root2fits: Convert a Caesar image stored in ROOT file to FITS image
 		- bkgfinder: Find bkg & rms maps from image in ROOT/FITS format
+		- residualfinder: Find residual maps with compact source subtracted from image
 		- saliencyfinder: Find saliency map from image in ROOT/FITS format
 		- sfinder: Find sources in FITS/ROOT image
 		- sfindersub: Generate sfinder config and submit run to batch system
@@ -32,6 +34,13 @@ From: caesar_base.simg
 		- sregiontagger: Tag sources (real/fake/unknown,...) matching with DS9 regions with region provided tags
 		- scatmatchfinder: Find cross-matches with list of Caesar source catalogs
 		- sastrocatmatchfinder: Find cross-matches with list of Astronomical ascii catalogs
+		- simsourcematch: Cross-match simulated sources with extracted catalogs (Caesar, Aegean, Selavy)
+		- sasciiexporter: Export source catalog in ROOT format in ASCII table format
+		- scountsunfolder: Unfold source counts flux density data in ROOT histogram format using a parametrized response matrix
+		- smatchfinder: Cross-match multiple Caesar ROOT catalog each other
+		- smvclassifier: Run neural network source component classifier on input Caesar ROOT catalog
+		- srefitter: Refit a list of input Caesar sources
+		- streewriter: Create simpler summary ROOT TTree files for island and component from ROOT Caesar catalog
 		
 	To launch an app do the following:
 	
@@ -43,7 +52,7 @@ From: caesar_base.simg
 
 %labels
 	Maintainer Simone Riggi (INAF-OACT)
-	Version v1.0
+	Version v1.1.2
 
 %environment
 	
@@ -61,9 +70,18 @@ From: caesar_base.simg
 	# Install lsb
 	apt-get -y install lsb-core
 
+	# Install & generate locales
+	apt-get -y install locales
+	echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+	echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+	echo "LANG=en_US.UTF-8" > /etc/locale.conf
+	locale-gen en_US.UTF-8
+	locale-gen en_US.UTF-8
+
 	#################################
 	###    RETRIEVING ENV
 	#################################
+	## Source vars
 	SOFT_SETVARS_FILE="/etc/profile.d/setupSoft.sh"
 	. $SOFT_SETVARS_FILE
 
@@ -75,13 +93,50 @@ From: caesar_base.simg
 	echo "SOFTDIR_SRCS=$SOFTDIR_SRCS"
 	echo "PATH=$PATH"
 	echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+	echo "PYTHONPATH=$PYTHONPATH"
+	echo "JSONCPP_ROOT=$JSONCPP_ROOT"
+	echo "OPENMPI_DIR=$OPENMPI_DIR"
 	echo "ROOTSYS=$ROOTSYS"
 	echo "ROOT_LOGON_DIR=$ROOT_LOGON_DIR"
+	echo "OPENCV_DIR=$OPENCV_DIR"
+	echo "CASAPATH=$CASAPATH"
+	echo "CASA_DIR=$CASA_DIR"
 
 	## Add openmpi lib to LD_LIBRARY_PATH
 	##export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib
 	##echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib' >> "$SOFT_SETVARS_FILE"
 	##echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $SINGULARITY_ENVIRONMENT	
+
+	## Add vars to singularity env file
+	## - Software dirs
+	echo "export SOFTDIR=$SOFTDIR" >> $SINGULARITY_ENVIRONMENT
+	echo "export SOFTDIR_SRCS=$SOFTDIR/Sources" >> $SINGULARITY_ENVIRONMENT
+	echo "export SOFTDIR_TAR=$SOFTDIR/TarFiles" >> $SINGULARITY_ENVIRONMENT
+	
+	## - JSONCPP
+	echo "export JSONCPP_ROOT=$JSONCPP_ROOT" >> $SINGULARITY_ENVIRONMENT
+	
+	## - OPENMPI
+	echo "export OPENMPI_DIR=$OPENMPI_DIR" >> $SINGULARITY_ENVIRONMENT
+	
+	## - ROOT
+	echo "export ROOTSYS=$ROOTSYS" >> $SINGULARITY_ENVIRONMENT
+	echo "export ROOT_LOGON_DIR=$ROOT_LOGON_DIR" >> $SINGULARITY_ENVIRONMENT	
+
+	## - OPENCV
+	echo "export OPENCV_DIR=$OPENCV_DIR" >> $SINGULARITY_ENVIRONMENT
+	
+	## - CASA
+	echo "export CASAPATH=$CASAPATH" >> $SINGULARITY_ENVIRONMENT
+	echo "export CASA_DIR=$CASA_DIR" >> $SINGULARITY_ENVIRONMENT
+	echo "export CASASRC=$CASASRC" >> $SINGULARITY_ENVIRONMENT
+	echo "export CASALD_LIBRARY_PATH=$CASALD_LIBRARY_PATH" >> $SINGULARITY_ENVIRONMENT
+
+	## Add paths
+	echo "export PATH=$PATH" >> $SINGULARITY_ENVIRONMENT
+	echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $SINGULARITY_ENVIRONMENT
+	echo "export PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >> $SINGULARITY_ENVIRONMENT
+	echo "export PYTHONPATH=$PYTHONPATH" >> $SINGULARITY_ENVIRONMENT
 
 	#################################
 	###    ADD BIND DIRECTORY
@@ -186,6 +241,9 @@ From: caesar_base.simg
 %apprun bkgfinder
 	exec FindBkg "$@"
 
+%apprun residualfinder
+	exec FindSourceResidual "$@"
+
 %apprun sfinder
 	exec FindSourceMPI "$@"	
 
@@ -246,8 +304,26 @@ From: caesar_base.simg
 %apprun sastrocatmatchfinder
 	exec SourceAstroCatalogsMatchFinder "$@"
 
+%apprun simsourcematch
+	exec CrossMatchSimSources "$@"
+
+%apprun sasciiexporter
+	exec SourceAsciiExporter "$@"
+
+%apprun scountsunfolder
+	exec SourceCountsUnfolder "$@"
+
+%apprun smatchfinder
+	exec SourceMatchFinder "$@"
+
 %apprun smvclassifier
 	exec SourceMVClassifier "$@"
+
+%apprun srefitter
+	exec SourceRefitter "$@"
+
+%apprun streewriter
+	exec SourceTreeWriter "$@"
 
 %apprun printenv
 	exec echo "PATH=$PATH CAESAR_DIR=$CAESAR_DIR"
